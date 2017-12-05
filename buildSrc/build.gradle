@@ -1,0 +1,9 @@
+apply plugin: 'groovy'
+
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+}
+
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
