@@ -13,5 +13,27 @@ class CipherSoPlugin implements Plugin<Project> {
         project.extensions.add("cipher", new CipherSoExt(project))
         project.tasks.create("printKey", GenerateCipherSoHeaderTask)
 
+        setupProjectNativeSupport(project)
+
+    }
+
+    def setupProjectNativeSupport(Project project) {
+        project.android
+                .defaultConfig
+                .externalNativeBuild {
+
+            cmake {
+                String currentFlags = cppFlags ?: ""
+                cppFlags currentFlags
+            }
+
+        }
+
+        project.android.externalNativeBuild {
+            cmake {
+                path "CMakeLists.txt"
+            }
+        }
+
     }
 }

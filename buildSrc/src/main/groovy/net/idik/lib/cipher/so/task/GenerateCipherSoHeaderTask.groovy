@@ -1,36 +1,32 @@
 package net.idik.lib.cipher.so.task
 
 import net.idik.lib.cipher.so.extension.CipherSoExt
+import net.idik.lib.cipher.so.utils.IOUtils
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 
 class GenerateCipherSoHeaderTask extends DefaultTask {
 
-    public static final String TARGET_FILE_NAME = "extension_keys.h"
+    private static final String TARGET_FILE_NAME = "extension_keys.h"
+    private static final String GROUP_NAME = 'cipher.so'
+
     private File targetFile
 
     GenerateCipherSoHeaderTask() {
-        group = 'cipher.so'
-        targetFile = findTargetNativeFile(project.buildDir)
+        group = GROUP_NAME
+        targetFile = IOUtils.getNativeHeaderFile(project, TARGET_FILE_NAME)
     }
 
     @TaskAction
     void generate() {
         def keyContainer = project.cipher as CipherSoExt
         def writer = new FileWriter(targetFile)
-        new SoHeaderBuilder(TARGET_FILE_NAME, keyContainer.keys.asList()).build().each {
+        new CipherSoHeaderBuilder(TARGET_FILE_NAME, keyContainer.keys.asList()).build().each {
             writer.append(it)
         }
         writer.flush()
         writer.close()
     }
 
-    private File findTargetNativeFile(File rootFile) {
-        File dir = new File(rootFile, "cipher.so/include/main/cpp")
-        if (!dir.exists()) {
-            dir.mkdirs()
-        }
-        return new File(dir, TARGET_FILE_NAME)
-    }
 
 }

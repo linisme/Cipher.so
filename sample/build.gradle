@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'cipher.so'
 
 android {
     compileSdkVersion 26
@@ -10,11 +9,11 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        externalNativeBuild {
-            cmake {
-                cppFlags ""
-            }
-        }
+//        externalNativeBuild {
+//            cmake {
+//                cppFlags ""
+//            }
+//        }
     }
     buildTypes {
         release {
@@ -29,16 +28,6 @@ android {
     }
 }
 
-cipher {
-    keys {
-        数据库 {
-            value = '密码密码密码'
-        }
-        网络底层 {
-            value = '密码密码密码1111'
-        }
-    }
-}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -48,4 +37,17 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+}
+
+apply plugin: 'cipher.so'
+
+cipher {
+    keys {
+        数据库 {
+            value = '密码密码密码'
+        }
+        网络底层 {
+            value = '密码密码密码1111'
+        }
+    }
 }
