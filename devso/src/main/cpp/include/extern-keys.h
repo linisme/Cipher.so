@@ -5,10 +5,10 @@
 #ifndef CIPHERSO_EXTERN_KEYS_H
 #define CIPHERSO_EXTERN_KEYS_H
 
-#define LOAD_MAP(map) \
-    map["dbkey"] = "hello db"; \
-    map["sessionkey"] = "hello session"; \
-    map["userkey"] = "hello user"; \
+#define LOAD_MAP(_map) \
+    _map["dbkey"] = "hello db"; \
+    _map["sessionkey"] = "hello session"; \
+    _map["userkey"] = "hello user"; \
 
 
 #endif //CIPHERSO_EXTERN_KEYS_H

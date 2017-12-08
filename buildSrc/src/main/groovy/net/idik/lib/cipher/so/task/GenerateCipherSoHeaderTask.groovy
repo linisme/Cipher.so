@@ -7,7 +7,7 @@ import org.gradle.api.tasks.TaskAction
 
 class GenerateCipherSoHeaderTask extends DefaultTask {
 
-    private static final String TARGET_FILE_NAME = "extension_keys.h"
+    private static final String TARGET_FILE_NAME = "extern-keys.h"
     private static final String GROUP_NAME = 'cipher.so'
 
     private File targetFile
