@@ -1,4 +1,4 @@
-package net.idik.lib.cipher;
+package net.idik.lib.cipher.so;
 
 import android.content.Context;
 

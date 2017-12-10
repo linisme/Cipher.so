@@ -31,12 +31,13 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 }
 
+
 apply plugin: 'cipher.so'
 
 cipher {
     keys {
         数据库 {
-            value = '密码密码密码'
+            value = '你好数据库'
         }
         网络底层 {
             value = '密码密码密码1111'

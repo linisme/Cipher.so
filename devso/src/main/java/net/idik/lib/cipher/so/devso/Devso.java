@@ -1,6 +1,6 @@
 package net.idik.lib.cipher.so.devso;
 
-import net.idik.lib.cipher.CipherClient;
+import net.idik.lib.cipher.so.CipherClient;
 
 /**
  * Created by linshuaibin on 2017/12/7.

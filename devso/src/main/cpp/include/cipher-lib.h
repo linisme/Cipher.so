@@ -21,11 +21,11 @@ JNICALL
 JNI_OnLoad(JavaVM *vm, void *reserved);
 
 JNIEXPORT void JNICALL
-Java_net_idik_lib_cipher_CipherClient_init(JNIEnv *env, jclass type);
+Java_net_idik_lib_cipher_so_CipherClient_init(JNIEnv *env, jclass type);
 
 JNIEXPORT jstring
 JNICALL
-Java_net_idik_lib_cipher_CipherClient_getString(JNIEnv *env, jobject
+Java_net_idik_lib_cipher_so_CipherClient_getString(JNIEnv *env, jobject
 instance, jstring key_);
 
 #ifdef __cplusplus
