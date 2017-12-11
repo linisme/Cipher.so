@@ -1,10 +1,12 @@
 package net.idik.lib.cipher.so.plugin
 
+import com.android.build.gradle.AppExtension
 import net.idik.lib.cipher.so.extension.CipherSoExt
 import net.idik.lib.cipher.so.task.GenerateCipherSoHeaderTask
+import net.idik.lib.cipher.so.task.GenerateJavaClientFileTask
+
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.tasks.Copy
 
 class CipherSoPlugin implements Plugin<Project> {
 
@@ -22,7 +24,7 @@ class CipherSoPlugin implements Plugin<Project> {
     static def prepareCipherEnvironment(Project project) {
 //        project.afterEvaluate {
 
-        def generateCipherSoExternTask = project.tasks.create("generateCipherSoHeader", GenerateCipherSoHeaderTask)
+        def android = project.extensions.findByType(AppExtension)
 
 //        def copyCppTask = project.tasks.create("copyCpp", Copy) {
 //            group "cipher.so"
@@ -40,13 +42,22 @@ class CipherSoPlugin implements Plugin<Project> {
 //            into new File(project.buildDir, "cipher.so")
 //        }
 
-        def android = project.extensions.android
+
         android.applicationVariants.all { variant ->
-            project.getTasksByName("generateJsonModel${capitalize(variant.name)}", false).each {
+            def generateCipherSoExternTask = project.tasks.create("generate${capitalize(variant.name)}CipherSoHeader", GenerateCipherSoHeaderTask)
+            project.getTasksByName("pre${capitalize(variant.name)}Build", false).each {
 //                it.dependsOn copyCppTask
 //                it.dependsOn copyCMakeListsTask
                 it.dependsOn generateCipherSoExternTask
             }
+            def generateJavaClientTask = project.tasks.create("generate${capitalize(variant.name)}JavaClient", GenerateJavaClientFileTask)
+            def outputDir = new File("${project.buildDir}/generated/source/cipher.so/${variant.name}")
+            generateJavaClientTask.configure {
+                it.keyExts = project.cipher.keys.asList()
+                it.outputDir = outputDir
+            }
+            variant.registerJavaGeneratingTask(generateJavaClientTask, outputDir)
+
         }
 
 //        }

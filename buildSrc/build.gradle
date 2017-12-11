@@ -1,8 +1,16 @@
+repositories {
+    mavenCentral()
+    jcenter()
+    google()
+}
+
 apply plugin: 'groovy'
 
 dependencies {
     implementation gradleApi()
     implementation localGroovy()
+    implementation 'com.squareup:javapoet:1.9.0'
+    implementation 'com.android.tools.build:gradle:3.0.1'
 }
 
 sourceCompatibility = "1.8"
