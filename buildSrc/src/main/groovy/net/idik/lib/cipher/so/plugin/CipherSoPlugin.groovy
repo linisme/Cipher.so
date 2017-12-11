@@ -4,7 +4,7 @@ import com.android.build.gradle.AppExtension
 import net.idik.lib.cipher.so.extension.CipherSoExt
 import net.idik.lib.cipher.so.task.GenerateCipherSoHeaderTask
 import net.idik.lib.cipher.so.task.GenerateJavaClientFileTask
-
+import net.idik.lib.cipher.so.utils.StringUtils
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -44,13 +44,13 @@ class CipherSoPlugin implements Plugin<Project> {
 
 
         android.applicationVariants.all { variant ->
-            def generateCipherSoExternTask = project.tasks.create("generate${capitalize(variant.name)}CipherSoHeader", GenerateCipherSoHeaderTask)
-            project.getTasksByName("pre${capitalize(variant.name)}Build", false).each {
+            def generateCipherSoExternTask = project.tasks.create("generate${StringUtils.capitalize(variant.name)}CipherSoHeader", GenerateCipherSoHeaderTask)
+            project.getTasksByName("pre${StringUtils.capitalize(variant.name)}Build", false).each {
 //                it.dependsOn copyCppTask
 //                it.dependsOn copyCMakeListsTask
                 it.dependsOn generateCipherSoExternTask
             }
-            def generateJavaClientTask = project.tasks.create("generate${capitalize(variant.name)}JavaClient", GenerateJavaClientFileTask)
+            def generateJavaClientTask = project.tasks.create("generate${StringUtils.capitalize(variant.name)}JavaClient", GenerateJavaClientFileTask)
             def outputDir = new File("${project.buildDir}/generated/source/cipher.so/${variant.name}")
             generateJavaClientTask.configure {
                 it.keyExts = project.cipher.keys.asList()
@@ -63,9 +63,6 @@ class CipherSoPlugin implements Plugin<Project> {
 //        }
     }
 
-    static String capitalize(String str) {
-        return str.substring(0, 1).toUpperCase(Locale.US) + str.substring(1)
-    }
 
     static def setupProjectNativeSupport(Project project) {
         project.android

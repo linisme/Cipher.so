@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         TextView welcomeTextView = findViewById(R.id.sample_text);
-//        welcomeTextView.setText(CipherClient.);
+        welcomeTextView.setText(CipherClient.数据库());
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

@@ -5,6 +5,7 @@ import com.squareup.javapoet.JavaFile
 import com.squareup.javapoet.MethodSpec
 import com.squareup.javapoet.TypeSpec
 import net.idik.lib.cipher.so.extension.KeyExt
+import net.idik.lib.cipher.so.utils.StringUtils
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputDirectory
@@ -62,7 +63,7 @@ class GenerateJavaClientFileTask extends DefaultTask {
                     MethodSpec.methodBuilder("${it.name}")
                             .addModifiers(Modifier.PUBLIC, Modifier.FINAL, Modifier.STATIC)
                             .returns(String.class)
-                            .addStatement("return getString(\"${it.name}\")")
+                            .addStatement("return getString(\"${StringUtils.md5(it.name)}\")")
                             .build()
             )
         }

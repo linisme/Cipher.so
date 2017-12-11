@@ -1,6 +1,7 @@
 package net.idik.lib.cipher.so.task
 
 import net.idik.lib.cipher.so.extension.KeyExt
+import net.idik.lib.cipher.so.utils.StringUtils
 
 class CipherSoHeaderBuilder {
     private List<KeyExt> keys
@@ -20,7 +21,7 @@ class CipherSoHeaderBuilder {
         lines.add("#define $headerName\n\n")
         lines.add("#define LOAD_MAP(_map) \\\n")
         keys.each {
-            lines.add("    _map[\"${it.name}\"] = \"${it.value}\"; \\\n")
+            lines.add("    _map[\"${StringUtils.md5(it.name)}\"] = \"${it.value}\"; \\\n")
         }
         lines.add("\n")
         lines.add("#endif //$headerName\n\n")
