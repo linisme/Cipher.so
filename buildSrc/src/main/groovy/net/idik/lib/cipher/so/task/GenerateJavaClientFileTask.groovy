@@ -1,5 +1,6 @@
 package net.idik.lib.cipher.so.task
 
+import com.squareup.javapoet.ClassName
 import com.squareup.javapoet.CodeBlock
 import com.squareup.javapoet.JavaFile
 import com.squareup.javapoet.MethodSpec
@@ -20,19 +21,6 @@ class GenerateJavaClientFileTask extends DefaultTask {
 
     @Input
     List<KeyExt> keyExts
-
-//    static {
-//        System.loadLibrary("cipher-lib");
-//        init();
-//    }
-//
-//    public static String get(String key) {
-//        return getString(key);
-//    }
-//
-//    private static native void init();
-//
-//    private static native String getString(String key);
 
     @TaskAction
     void generate() {
@@ -57,13 +45,13 @@ class GenerateJavaClientFileTask extends DefaultTask {
                         .build())
 
 
-
+        def androidBase64ClassName = ClassName.get("android.util", "Base64")
         keyExts.each {
             classBuilder.addMethod(
                     MethodSpec.methodBuilder("${it.name}")
                             .addModifiers(Modifier.PUBLIC, Modifier.FINAL, Modifier.STATIC)
                             .returns(String.class)
-                            .addStatement("return getString(\"${StringUtils.md5(it.name)}\")")
+                            .addStatement('return new $T($T.decode(getString("$L"), $T.DEFAULT))', String.class, androidBase64ClassName, StringUtils.md5(it.name), androidBase64ClassName)
                             .build()
             )
         }
