@@ -18,7 +18,7 @@ class SoExt {
     @Override
     public String toString() {
         return "SoExt{" +
-                "keys=" + keys +
+                "keyExts=" + keys +
                 '}';
     }
 }

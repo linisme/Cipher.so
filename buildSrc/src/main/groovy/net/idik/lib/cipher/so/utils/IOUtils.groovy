@@ -4,8 +4,12 @@ import org.gradle.api.Project
 
 class IOUtils {
 
-    static File getNativeHeaderFile(Project project, String fileName) {
-        return getFile(project, "src/main/cpp/include/$fileName")
+    static File getNativeHeaderDir(Project project) {
+        File file = getFile(project, "src/main/cpp/include")
+        if (!file.exists()) {
+            file.mkdirs()
+        }
+        return file
     }
 
     static File getFile(Project project, String path) {
