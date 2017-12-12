@@ -1,6 +1,6 @@
 package net.idik.lib.cipher.so.task
 
-import net.idik.lib.cipher.so.extension.CipherSoExt
+import net.idik.lib.cipher.so.extension.CipherExt
 import net.idik.lib.cipher.so.utils.IOUtils
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
@@ -19,7 +19,7 @@ class GenerateCipherSoHeaderTask extends DefaultTask {
 
     @TaskAction
     void generate() {
-        def keyContainer = project.cipher as CipherSoExt
+        def keyContainer = (project.cipher as CipherExt).soExt
         def writer = new FileWriter(targetFile)
         new CipherSoHeaderBuilder(TARGET_FILE_NAME, keyContainer.keys.asList()).build().each {
             writer.append(it)

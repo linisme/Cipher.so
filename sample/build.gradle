@@ -1,3 +1,4 @@
+apply plugin: 'cipher.so'
 apply plugin: 'com.android.application'
 
 android {
@@ -31,13 +32,10 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 }
 
-
-apply plugin: 'cipher.so'
-
-cipher {
+cipher.so {
     keys {
         数据库 {
-            value = '你好数据库'
+            value = '你好数据库!'
         }
         网络底层 {
             value = '你好网络底层'

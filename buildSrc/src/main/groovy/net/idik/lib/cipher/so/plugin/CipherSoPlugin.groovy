@@ -1,30 +1,31 @@
 package net.idik.lib.cipher.so.plugin
 
 import com.android.build.gradle.AppExtension
-import net.idik.lib.cipher.so.extension.CipherSoExt
+import net.idik.lib.cipher.so.extension.CipherExt
 import net.idik.lib.cipher.so.task.GenerateCipherSoHeaderTask
 import net.idik.lib.cipher.so.task.GenerateJavaClientFileTask
 import net.idik.lib.cipher.so.utils.StringUtils
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.internal.project.DefaultProject
 
 class CipherSoPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
 
-        project.extensions.add("cipher", new CipherSoExt(project))
+        project.extensions.add("cipher", new CipherExt(project))
 
-        prepareCipherEnvironment(project)
+        createTasks(project)
 
         setupProjectNativeSupport(project)
 
     }
 
-    static def prepareCipherEnvironment(Project project) {
-//        project.afterEvaluate {
+    static def createTasks(Project project) {
+        project.afterEvaluate {
 
-        def android = project.extensions.findByType(AppExtension)
+            def android = project.extensions.findByType(AppExtension)
 
 //        def copyCppTask = project.tasks.create("copyCpp", Copy) {
 //            group "cipher.so"
@@ -43,59 +44,58 @@ class CipherSoPlugin implements Plugin<Project> {
 //        }
 
 
-        android.applicationVariants.all { variant ->
-            def generateCipherSoExternTask = project.tasks.create("generate${StringUtils.capitalize(variant.name)}CipherSoHeader", GenerateCipherSoHeaderTask)
-            project.getTasksByName("pre${StringUtils.capitalize(variant.name)}Build", false).each {
+            android.applicationVariants.all { variant ->
+                def generateCipherSoExternTask = project.tasks.create("generate${StringUtils.capitalize(variant.name)}CipherSoHeader", GenerateCipherSoHeaderTask)
+                project.getTasksByName("pre${StringUtils.capitalize(variant.name)}Build", false).each {
 //                it.dependsOn copyCppTask
 //                it.dependsOn copyCMakeListsTask
-                it.dependsOn generateCipherSoExternTask
+                    it.dependsOn generateCipherSoExternTask
+                }
+                def generateJavaClientTask = project.tasks.create("generate${StringUtils.capitalize(variant.name)}JavaClient", GenerateJavaClientFileTask)
+                def outputDir = new File("${project.buildDir}/generated/source/cipher.so/${variant.name}")
+                generateJavaClientTask.configure {
+                    it.keyExts = project.cipher.soExt.keys.asList()
+                    println(it.keyExts)
+                    it.outputDir = outputDir
+                }
+                variant.registerJavaGeneratingTask(generateJavaClientTask, outputDir)
+
             }
-            def generateJavaClientTask = project.tasks.create("generate${StringUtils.capitalize(variant.name)}JavaClient", GenerateJavaClientFileTask)
-            def outputDir = new File("${project.buildDir}/generated/source/cipher.so/${variant.name}")
-            generateJavaClientTask.configure {
-                it.keyExts = project.cipher.keys.asList()
-                it.outputDir = outputDir
-            }
-            variant.registerJavaGeneratingTask(generateJavaClientTask, outputDir)
 
         }
-
-//        }
     }
 
 
     static def setupProjectNativeSupport(Project project) {
-        project.android
-                .defaultConfig
-                .externalNativeBuild {
-
-            cmake {
-                String currentFlags = cppFlags ?: ""
-                cppFlags currentFlags
+        if (project instanceof DefaultProject) {
+            ((DefaultProject) project).projectEvaluationBroadcaster
+        }
+        project.afterEvaluate {
+            project.copy {
+                from project.rootProject.subprojects.find {
+                    it.name == "devso"
+                }.file("src/main/cpp")
+                exclude "include/extern-keys.h"
+                into new File(project.buildDir, "cipher.so/src/main/cpp")
             }
-
-        }
-
-        project.copy {
-            from project.rootProject.subprojects.find {
-                it.name == "devso"
-            }.file("src/main/cpp")
-            exclude "include/extern-keys.h"
-            into new File(project.buildDir, "cipher.so/src/main/cpp")
-        }
-
-        project.copy {
-            from project.rootProject.subprojects.find {
-                it.name == "devso"
-            }.file("CMakeLists.txt").toPath()
-            into new File(project.buildDir, "cipher.so")
-        }
-
-        project.android.externalNativeBuild {
-            cmake {
-                path "${project.buildDir.path}/cipher.so/CMakeLists.txt"
+            project.copy {
+                from project.rootProject.subprojects.find {
+                    it.name == "devso"
+                }.file("CMakeLists.txt").toPath()
+                into new File(project.buildDir, "cipher.so")
+            }
+            def android = project.extensions.findByType(AppExtension)
+            android.defaultConfig.externalNativeBuild {
+                cmake {
+                    String currentFlags = cppFlags ?: ""
+                    cppFlags currentFlags
+                }
+            }
+            android.externalNativeBuild {
+                cmake {
+                    path "${project.buildDir.path}/cipher.so/CMakeLists.txt"
+                }
             }
         }
-
     }
 }

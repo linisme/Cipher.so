@@ -3,12 +3,11 @@ package net.idik.lib.cipher.so.extension
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 
-class CipherSoExt {
+class SoExt {
 
     NamedDomainObjectContainer<KeyExt> keys
 
-
-    CipherSoExt(Project project) {
+    SoExt(Project project) {
         keys = project.container(KeyExt)
     }
 
@@ -16,10 +15,9 @@ class CipherSoExt {
         keys.configure closure
     }
 
-
     @Override
     public String toString() {
-        return "CipherSoExt{" +
+        return "SoExt{" +
                 "keys=" + keys +
                 '}';
     }
