@@ -1,4 +1,4 @@
-package net.idik.lib.cipher.so.task
+package net.idik.lib.cipher.so.generater
 
 import net.idik.lib.cipher.so.extension.KeyExt
 import net.idik.lib.cipher.so.utils.StringUtils

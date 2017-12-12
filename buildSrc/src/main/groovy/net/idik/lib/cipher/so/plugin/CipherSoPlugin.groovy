@@ -2,6 +2,7 @@ package net.idik.lib.cipher.so.plugin
 
 import com.android.build.gradle.AppExtension
 import net.idik.lib.cipher.so.extension.CipherExt
+import net.idik.lib.cipher.so.generater.CMakeListsBuilder
 import net.idik.lib.cipher.so.task.GenerateCipherSoHeaderTask
 import net.idik.lib.cipher.so.task.GenerateJavaClientFileTask
 import net.idik.lib.cipher.so.utils.IOUtils
@@ -92,15 +93,27 @@ class CipherSoPlugin implements Plugin<Project> {
                 into new File(project.buildDir, "cipher.so")
             }
             def android = project.extensions.findByType(AppExtension)
-            android.defaultConfig.externalNativeBuild {
-                cmake {
-                    String currentFlags = cppFlags ?: ""
-                    cppFlags currentFlags
-                }
+//            android.defaultConfig.externalNativeBuild {
+//                cmake {
+//                    String currentFlags = cppFlags ?: ""
+//                    cppFlags currentFlags
+//                }
+//            }
+            def originCMakePath = android.externalNativeBuild.cmake.path?.path
+            def cmakelistsOutputDir = new File("${project.buildDir.path}/cipher.so/cmake")
+            if (!cmakelistsOutputDir.exists()) {
+                cmakelistsOutputDir.mkdirs()
             }
+            def targetFile = new File(cmakelistsOutputDir, "CMakeLists.txt")
+            def writer = new FileWriter(targetFile)
+            new CMakeListsBuilder("${project.buildDir.path}/cipher.so/CMakeLists.txt").setOriginCMakePath(originCMakePath).build().each {
+                writer.append(it)
+            }
+            writer.flush()
+            writer.close()
             android.externalNativeBuild {
                 cmake {
-                    path "${project.buildDir.path}/cipher.so/CMakeLists.txt"
+                    path "${targetFile.path}"
                 }
             }
         }

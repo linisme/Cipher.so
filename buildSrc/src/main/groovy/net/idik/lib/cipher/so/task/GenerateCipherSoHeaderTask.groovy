@@ -1,6 +1,7 @@
 package net.idik.lib.cipher.so.task
 
 import net.idik.lib.cipher.so.extension.KeyExt
+import net.idik.lib.cipher.so.generater.CipherSoHeaderBuilder
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputDirectory
