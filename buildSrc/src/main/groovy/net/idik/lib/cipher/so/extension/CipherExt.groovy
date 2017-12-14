@@ -4,18 +4,18 @@ import org.gradle.api.Project
 
 class CipherExt {
 
-    SoExt soExt
+    SoExt so
 
     Project project
 
     CipherExt(Project project) {
-        this.soExt = new SoExt(project)
+        this.so = new SoExt(project)
         this.project = project
     }
 
     def so(Closure closure) {
 //        closure.resolveStrategy = Closure.DELEGATE_ONLY
-//        closure.delegate = soExt
-        project.configure(soExt, closure)
+//        closure.delegate = so
+        project.configure(so, closure)
     }
 }

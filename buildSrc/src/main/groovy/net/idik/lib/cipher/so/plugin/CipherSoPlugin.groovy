@@ -34,7 +34,7 @@ class CipherSoPlugin implements Plugin<Project> {
             into new File(project.buildDir, "cipher.so")
         }
         android.applicationVariants.all { variant ->
-            def keyExts = project.cipher.soExt.keys.asList()
+            def keyExts = project.cipher.so.keys.asList()
             def generateCipherSoExternTask = project.tasks.create("generate${StringUtils.capitalize(variant.name)}CipherSoHeader", GenerateCipherSoHeaderTask)
             generateCipherSoExternTask.configure {
                 it.keyExts = keyExts
