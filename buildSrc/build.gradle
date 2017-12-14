@@ -1,5 +1,15 @@
 apply plugin: 'groovy'
 apply plugin: 'maven'
+apply plugin: 'com.novoda.bintray-release'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.novoda:bintray-release:0.8.0'
+    }
+}
 
 repositories {
     mavenCentral()
@@ -51,4 +61,20 @@ uploadArchives {
             repository(url: uri('../repo'))
         }
     }
+}
+
+Properties properties = new Properties()
+properties.load(project.file('../local.properties').newDataInputStream())
+
+publish {
+    userOrg = 'idik-net'
+    groupId = project.group
+    artifactId = archivesBaseName
+    publishVersion = project.version
+    desc = 'A sample way to store secure message in .so librarly'
+    website = 'https://github.com/MEiDIK/Cipher.so'
+    repoName = 'Cipher.so'
+    bintrayUser = properties.getProperty("bintray.user")
+    bintrayKey = properties.getProperty("bintray.apikey")
+    dryRun = false
 }
