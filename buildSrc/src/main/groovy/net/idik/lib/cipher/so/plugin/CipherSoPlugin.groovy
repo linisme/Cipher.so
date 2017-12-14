@@ -9,7 +9,6 @@ import net.idik.lib.cipher.so.utils.IOUtils
 import net.idik.lib.cipher.so.utils.StringUtils
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.internal.project.DefaultProject
 import org.gradle.api.tasks.Copy
 
 class CipherSoPlugin implements Plugin<Project> {
@@ -19,103 +18,106 @@ class CipherSoPlugin implements Plugin<Project> {
 
         project.extensions.add("cipher", new CipherExt(project))
 
-        createTasks(project)
-
         setupProjectNativeSupport(project)
 
     }
 
-    static def createTasks(Project project) {
-        project.afterEvaluate {
+    private static def createTasks(Project project, AppExtension android) {
 
-            def android = project.extensions.findByType(AppExtension)
-
-            def copyCppTask = project.tasks.create("copyCpp", Copy) {
-                group "cipher.so"
-                from project.rootProject.subprojects.find {
-                    it.name == "devso"
-                }.file("src/main/cpp")
-                exclude "include/extern-keys.h"
-                into new File(project.buildDir, "cipher.so/src/main/cpp")
+        def archiveFile = getNativeArchiveFile(project)
+        def copyNativeArchiveTask = project.tasks.create("copyNativeArchive", Copy) {
+            group "cipher.so"
+            from archiveFile
+            include "src/main/cpp/**"
+            include "CMakeLists.txt"
+            exclude "src/main/cpp/include/extern-keys.h"
+            into new File(project.buildDir, "cipher.so")
+        }
+        android.applicationVariants.all { variant ->
+            def keyExts = project.cipher.soExt.keys.asList()
+            def generateCipherSoExternTask = project.tasks.create("generate${StringUtils.capitalize(variant.name)}CipherSoHeader", GenerateCipherSoHeaderTask)
+            generateCipherSoExternTask.configure {
+                it.keyExts = keyExts
+                it.outputDir = IOUtils.getNativeHeaderDir(project)
             }
-            def copyCMakeListsTask = project.tasks.create("copyCMakeList", Copy) {
-                group "cipher.so"
-                from project.rootProject.subprojects.find {
-                    it.name == "devso"
-                }.file("CMakeLists.txt").toPath()
-                into new File(project.buildDir, "cipher.so")
+            project.getTasksByName("generateJsonModel${StringUtils.capitalize(variant.name)}", false).each {
+                it.dependsOn copyNativeArchiveTask
+                it.dependsOn generateCipherSoExternTask
             }
-
-
-            android.applicationVariants.all { variant ->
-                def keyExts = project.cipher.soExt.keys.asList()
-                def generateCipherSoExternTask = project.tasks.create("generate${StringUtils.capitalize(variant.name)}CipherSoHeader", GenerateCipherSoHeaderTask)
-                generateCipherSoExternTask.configure {
-                    it.keyExts = keyExts
-                    it.outputDir = IOUtils.getNativeHeaderDir(project)
-                }
-                project.getTasksByName("generateJsonModel${StringUtils.capitalize(variant.name)}", false).each {
-                    it.dependsOn copyCppTask
-                    it.dependsOn copyCMakeListsTask
-                    it.dependsOn generateCipherSoExternTask
-                }
-                def generateJavaClientTask = project.tasks.create("generate${StringUtils.capitalize(variant.name)}JavaClient", GenerateJavaClientFileTask)
-                def outputDir = new File("${project.buildDir}/generated/source/cipher.so/${variant.name}")
-                generateJavaClientTask.configure {
-                    it.keyExts = keyExts
-                    println(it.keyExts)
-                    it.outputDir = outputDir
-                }
-                variant.registerJavaGeneratingTask(generateJavaClientTask, outputDir)
-
+            def generateJavaClientTask = project.tasks.create("generate${StringUtils.capitalize(variant.name)}JavaClient", GenerateJavaClientFileTask)
+            def outputDir = new File("${project.buildDir}/generated/source/cipher.so/${variant.name}")
+            generateJavaClientTask.configure {
+                it.keyExts = keyExts
+                it.outputDir = outputDir
             }
-
+            variant.registerJavaGeneratingTask(generateJavaClientTask, outputDir)
         }
     }
 
 
-    static def setupProjectNativeSupport(Project project) {
-        if (project instanceof DefaultProject) {
-            ((DefaultProject) project).projectEvaluationBroadcaster
-        }
+    private static def setupProjectNativeSupport(Project project) {
         project.afterEvaluate {
-            project.copy {
-                from project.rootProject.subprojects.find {
-                    it.name == "devso"
-                }.file("src/main/cpp")
-                exclude "include/extern-keys.h"
-                into new File(project.buildDir, "cipher.so/src/main/cpp")
-            }
-            project.copy {
-                from project.rootProject.subprojects.find {
-                    it.name == "devso"
-                }.file("CMakeLists.txt").toPath()
-                into new File(project.buildDir, "cipher.so")
-            }
+            unzipNativeArchive(project)
             def android = project.extensions.findByType(AppExtension)
-//            android.defaultConfig.externalNativeBuild {
-//                cmake {
-//                    String currentFlags = cppFlags ?: ""
-//                    cppFlags currentFlags
-//                }
-//            }
-            def originCMakePath = android.externalNativeBuild.cmake.path?.path
-            def cmakelistsOutputDir = new File("${project.buildDir.path}/cipher.so/cmake")
-            if (!cmakelistsOutputDir.exists()) {
-                cmakelistsOutputDir.mkdirs()
-            }
-            def targetFile = new File(cmakelistsOutputDir, "CMakeLists.txt")
-            def writer = new FileWriter(targetFile)
-            new CMakeListsBuilder("${project.buildDir.path}/cipher.so/CMakeLists.txt").setOriginCMakePath(originCMakePath).build().each {
-                writer.append(it)
-            }
-            writer.flush()
-            writer.close()
+            File targetFile = generateCMakeListsFile(project, android)
             android.externalNativeBuild {
                 cmake {
-                    path "${targetFile.path}"
+                    path targetFile.path
                 }
             }
+            createTasks(project, android)
         }
+    }
+
+    private static def unzipNativeArchive(Project project) {
+        def archiveFile = getNativeArchiveFile(project)
+        project.copy {
+            from archiveFile
+            include "src/main/cpp/**"
+            include "CMakeLists.txt"
+            exclude "src/main/cpp/include/extern-keys.h"
+            into new File(project.buildDir, "cipher.so")
+        }
+
+    }
+
+    private static def getNativeArchiveFile(Project project) {
+        if (project.rootProject.subprojects.find { it.name == "devso" } != null) {
+            return project.rootProject.file("devso").path
+        } else {
+            def archiveZip = findNativeArchiveFromBuildscript(project)
+            if (archiveZip == null) {
+                archiveZip = findNativeArchiveFromBuildscript(project.rootProject)
+            }
+            archiveZip
+        }
+    }
+
+    private static def findNativeArchiveFromBuildscript(Project project) {
+        def archiveZip = null
+        project.buildscript.configurations.findAll {
+            project.gradle.gradleVersion >= '4.0' ? it.isCanBeResolved() : true
+        }.each { config ->
+            File file = config.files.find { it.name.contains("cipher.so") }
+            if (file != null) {
+                archiveZip = project.zipTree(file)
+            }
+        }
+        return archiveZip
+    }
+
+    private static File generateCMakeListsFile(Project project, AppExtension android) {
+        def outputDir = new File("${project.buildDir.path}/cipher.so/cmake")
+        if (!outputDir.exists()) {
+            outputDir.mkdirs()
+        }
+        def targetFile = new File(outputDir, "CMakeLists.txt")
+        def writer = new FileWriter(targetFile)
+        new CMakeListsBuilder("${project.buildDir.path}/cipher.so/CMakeLists.txt").setOriginCMakePath(android.externalNativeBuild.cmake.path?.path).build().each {
+            writer.append(it)
+        }
+        writer.flush()
+        writer.close()
+        targetFile
     }
 }

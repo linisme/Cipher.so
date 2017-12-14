@@ -1,10 +1,11 @@
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
 repositories {
     mavenCentral()
     jcenter()
     google()
 }
-
-apply plugin: 'groovy'
 
 dependencies {
     implementation gradleApi()
@@ -15,3 +16,39 @@ dependencies {
 
 sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
+
+
+group = 'net.idik.lib.security'
+archivesBaseName = 'cipher.so'
+version = '0.0.1'
+
+task zipNativeArchive(type: Zip) {
+    destinationDir project.file("build/libs")
+    archiveName "$archivesBaseName-${version}.jarx"
+    from project.zipTree("build/libs/$archivesBaseName-${version}.jar")
+    include "META-INF/**"
+    include "net/**"
+    from("${project.rootProject.file("devso").path}")
+    include "src/main/cpp/**"
+    include "CMakeLists.txt"
+    exclude "src/main/cpp/include/extern-keys.h"
+
+    doLast {
+        def originJar = project.file("build/libs/$archivesBaseName-${version}.jar")
+        def xJar = project.file("build/libs/$archivesBaseName-${version}.jarx")
+        originJar.delete()
+        xJar.renameTo(originJar)
+    }
+
+}
+
+tasks['jar'].finalizedBy zipNativeArchive
+
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri('../repo'))
+        }
+    }
+}
