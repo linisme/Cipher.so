@@ -85,9 +85,11 @@ String dbKey = CipherClient.数据库密码();
 
 
 
-## How to Contribute?
+## Contribute?
 
 I am very glad for your contributes. Let's make this job more awnsome.
+
+Here is the contribute workflow from github: [Contribute Guide](https://github.com/openframeworks/openFrameworks/wiki/Code-Contribution-Workflow#workflow)
 
 
 ## Todos
