@@ -1,7 +1,7 @@
 [ ![Download](https://api.bintray.com/packages/idik-net/Cipher.so/cipher.so/images/download.svg) ](https://bintray.com/idik-net/Cipher.so/cipher.so/_latestVersion)
 [![GitHub license](https://img.shields.io/github/license/MEiDIK/Cipher.so.svg)](https://github.com/MEiDIK/Cipher.so/blob/master/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/MEiDIK/Cipher.so.svg)](https://github.com/MEiDIK/Cipher.so/issues)
-[![Recommend](https://img.shields.io/badge/Recommend-%E2%AD%90%EF%B8%8F%E2%AD%90%EF%B8%8F%E2%AD%90%EF%B8%8F%E2%AD%90%EF%B8%8F%E2%AD%90%EF%B8%8F-green.svg)]()
+[![Recommend](https://img.shields.io/badge/Recommend-%E2%AD%90%EF%B8%8F%E2%AD%90%EF%B8%8F%E2%AD%90%EF%B8%8F%E2%AD%90%EF%B8%8F%E2%AD%90%EF%B8%8F-green.svg)](#)
 
 ![Logo](logo.png)
 
