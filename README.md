@@ -16,7 +16,7 @@ All the key-values will be auto package into a native library during the compile
 
 ### Features
 
-* Encyte secure infos in a native library by easy configs
+* Encrypt secure info in a native library via easy configs
 * Reflection free
 
 ---
