@@ -8,7 +8,7 @@
   <a href="https://github.com/MEiDIK/Cipher.so/blob/master/LICENSE"><img src="https://img.shields.io/github/license/MEiDIK/Cipher.so.svg" alt="GitHub license"></a>
 </p>
 
-## About Cipher.so
+## About
 
 ### How it works?
 
