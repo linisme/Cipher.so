@@ -2,9 +2,9 @@
 <h1 align="center">Cipher.so</h1>
 <p align="center">Providing a simple way to keep your secure info safe for android developing.</p>
 <p align="center">
-  <a href='https://bintray.com/idik-net/Cipher.so/cipher.so/_latestVersion'><img src='https://api.bintray.com/packages/idik-net/Cipher.so/cipher.so/images/download.svg'></a>
   <a href="http://androidweekly.net/issues/issue-288"><img src="https://img.shields.io/badge/Android%20Weekly-%23288-green.svg" alt="Android Weekly"></a>
   <a href="#"><img src="https://img.shields.io/badge/Recommend-%E2%AD%90%EF%B8%8F%E2%AD%90%EF%B8%8F%E2%AD%90%EF%B8%8F%E2%AD%90%EF%B8%8F%E2%AD%90%EF%B8%8F-green.svg" alt="Recommend"></a>
+  <a href='https://bintray.com/idik-net/Cipher.so/cipher.so/_latestVersion'><img src='https://api.bintray.com/packages/idik-net/Cipher.so/cipher.so/images/download.svg'></a>
   <a href="https://github.com/MEiDIK/Cipher.so/blob/master/LICENSE"><img src="https://img.shields.io/github/license/MEiDIK/Cipher.so.svg" alt="GitHub license"></a>
 </p>
 
