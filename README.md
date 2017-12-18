@@ -1,16 +1,14 @@
-[ ![Download](https://api.bintray.com/packages/idik-net/Cipher.so/cipher.so/images/download.svg) ](https://bintray.com/idik-net/Cipher.so/cipher.so/_latestVersion)
-[![GitHub license](https://img.shields.io/github/license/MEiDIK/Cipher.so.svg)](https://github.com/MEiDIK/Cipher.so/blob/master/LICENSE)
-[![GitHub issues](https://img.shields.io/github/issues/MEiDIK/Cipher.so.svg)](https://github.com/MEiDIK/Cipher.so/issues)
-[![Recommend](https://img.shields.io/badge/Recommend-%E2%AD%90%EF%B8%8F%E2%AD%90%EF%B8%8F%E2%AD%90%EF%B8%8F%E2%AD%90%EF%B8%8F%E2%AD%90%EF%B8%8F-green.svg)](#)
-[![Android Weekly](https://img.shields.io/badge/Android%20Weekly-%23288-green.svg)](http://androidweekly.net/issues/issue-288)
+<p align="center"><a href="https://github.com/dvdciri/daggraph" target="_blank"><img width="200"src="logo.png"></a></p>
+<h1 align="center">Cipher.so</h1>
+<p align="center">Providing a simple way to keep your secure info safe for android developing.</p>
+<p align="center">
+  <a href='https://bintray.com/idik-net/Cipher.so/cipher.so/_latestVersion'><img src='https://api.bintray.com/packages/idik-net/Cipher.so/cipher.so/images/download.svg'></a>
+  <a href="http://androidweekly.net/issues/issue-288"><img src="https://img.shields.io/badge/Android%20Weekly-%23288-green.svg" alt="Android Weekly"></a>
+  <a href="#"><img src="https://img.shields.io/badge/Recommend-%E2%AD%90%EF%B8%8F%E2%AD%90%EF%B8%8F%E2%AD%90%EF%B8%8F%E2%AD%90%EF%B8%8F%E2%AD%90%EF%B8%8F-green.svg" alt="Recommend"></a>
+  <a href="https://github.com/MEiDIK/Cipher.so/blob/master/LICENSE"><img src="https://img.shields.io/github/license/MEiDIK/Cipher.so.svg" alt="GitHub license"></a>
+</p>
 
-![Logo](logo.png)
-
-# Cipher.so
-
-## What's Cipher.so
-
-Cipher.so provide a simple way to keep your secure info safe for android developing.
+## About Cipher.so
 
 ### How it works?
 
