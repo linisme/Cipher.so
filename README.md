@@ -24,7 +24,7 @@ All the key-values will be auto package into a native library during the compile
 
 #### Installation
 ##### Step 1. in the root build.gradle:  
-Add `jcenter()` resposity and `classpath 'net.idik.lib.security:cipher.so:0.0.2'` dependency into the buildscript as fllow:
+Add `jcenter()` resposity and `classpath 'net.idik.lib.security:cipher.so:0.0.3'` dependency into the buildscript as fllow:
 
 ```groovy
 buildscript {
@@ -34,7 +34,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
-        classpath 'net.idik.lib.security:cipher.so:0.0.2'
+        classpath 'net.idik.lib.security:cipher.so:0.0.3'
     }
 }
 ```
