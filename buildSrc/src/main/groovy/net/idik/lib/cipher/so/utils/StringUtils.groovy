@@ -27,4 +27,9 @@ class StringUtils {
     static String capitalize(String str) {
         return str.substring(0, 1).toUpperCase(Locale.US) + str.substring(1)
     }
+
+    static String convertToUnix (String winPath) {
+        String unixPath = winPath.replace("\\", "/").replace(" ", "\\ ");
+        return unixPath;
+    }
 }
