@@ -1,6 +1,6 @@
 <p align="center"><a href="https://github.com/dvdciri/daggraph" target="_blank"><img width="200"src="logo.png"></a></p>
 <h1 align="center">Cipher.so</h1>
-<p align="center">Providing a simple way to keep your secure info safe for android developing.</p>
+<p align="center">Providing a simple way to keep your secure info safe for android app development.</p>
 <p align="center">
   <a href="http://androidweekly.net/issues/issue-288"><img src="https://img.shields.io/badge/Android%20Weekly-%23288-green.svg" alt="Android Weekly"></a>
   <a href="#"><img src="https://img.shields.io/badge/Recommend-%E2%AD%90%EF%B8%8F%E2%AD%90%EF%B8%8F%E2%AD%90%EF%B8%8F%E2%AD%90%EF%B8%8F%E2%AD%90%EF%B8%8F-green.svg" alt="Recommend"></a>
