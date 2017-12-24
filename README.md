@@ -96,6 +96,8 @@ Here is the contribute workflow from github: [Contribute Guide](https://github.c
 ## Todos
 * Encypte data in .so-lib
 * Prevent dynamic attacks
+    * ~~Check Signature~~
+    * More
 * Support different Application varients
 
 -----
