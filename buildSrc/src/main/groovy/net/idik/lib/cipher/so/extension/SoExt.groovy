@@ -7,6 +7,8 @@ class SoExt {
 
     NamedDomainObjectContainer<KeyExt> keys
 
+    String signature = ""
+
     SoExt(Project project) {
         keys = project.container(KeyExt)
     }
@@ -18,7 +20,8 @@ class SoExt {
     @Override
     public String toString() {
         return "SoExt{" +
-                "keyExts=" + keys +
+                "keys=" + keys +
+                ", signature='" + signature + '\'' +
                 '}';
     }
 }

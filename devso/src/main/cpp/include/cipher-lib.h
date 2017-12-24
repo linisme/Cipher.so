@@ -5,7 +5,6 @@
 #ifndef CIPHERSO_CIPHER_LIB_H
 #define CIPHERSO_CIPHER_LIB_H
 
-#include <android/log.h>
 #include <jni.h>
 #include <map>
 #include <string>
@@ -32,8 +31,6 @@ instance, jstring key_);
 };
 #endif
 
-#define INFO(...)__android_log_print(ANDROID_LOG_INFO, "Cipher.so", __VA_ARGS__)
-#define ERROR(...)__android_log_print(ANDROID_LOG_ERROR, "Cipher.so", __VA_ARGS__)
 
 
 #endif //CIPHERSO_CIPHER_LIB_H

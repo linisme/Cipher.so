@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import net.idik.lib.cipher.so.CipherClient;
+import net.idik.lib.cipher.so.SignatureUtils;
 import net.idik.lib.cipher.so.sample.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
 
         TextView welcomeTextView = findViewById(R.id.sample_text);
         welcomeTextView.setText(CipherClient.数据库());
-
 
 
         FloatingActionButton fab = findViewById(R.id.fab);

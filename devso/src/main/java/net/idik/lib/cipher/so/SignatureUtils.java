@@ -12,7 +12,7 @@ import android.content.pm.PackageManager;
 public class SignatureUtils {
 
     @SuppressLint("PackageManagerGetSignatures")
-    public String getSignature(Context context) {
+    public static String getSignature(Context context) {
         PackageInfo packageInfo = null;
         try {
             packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
@@ -20,7 +20,7 @@ public class SignatureUtils {
             e.printStackTrace();
         }
         if (packageInfo != null) {
-            return packageInfo.signatures[0].toCharsString();
+            return String.valueOf(packageInfo.signatures[0].hashCode());
         }
         return null;
     }

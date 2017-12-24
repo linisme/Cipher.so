@@ -11,4 +11,6 @@
     _map["userkey"] = "hello user"; \
 
 
+#define SIGNATURE ""
+
 #endif //CIPHERSO_EXTERN_KEYS_H

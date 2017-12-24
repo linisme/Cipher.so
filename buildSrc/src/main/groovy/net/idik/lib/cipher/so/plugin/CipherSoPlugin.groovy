@@ -36,30 +36,37 @@ class CipherSoPlugin implements Plugin<Project> {
 
         android.applicationVariants.all { variant ->
 
-            def keyExts = project.cipher.so.keys.asList()
+            def configs = project.cipher.so
+            def keys = configs.keys.asList()
             def generateCipherSoExternTask = project.tasks.create("generate${StringUtils.capitalize(variant.name)}CipherSoHeader", GenerateCipherSoHeaderTask)
             generateCipherSoExternTask.configure {
-                it.keyExts = keyExts
+                it.keyExts = keys
                 it.outputDir = IOUtils.getNativeHeaderDir(project)
+                it.signature = configs.signature
             }
             project.getTasksByName("generateJsonModel${StringUtils.capitalize(variant.name)}", false).each {
                 it.dependsOn copyNativeArchiveTask
                 it.dependsOn generateCipherSoExternTask
             }
-
             def outputDir = new File("${project.buildDir}/generated/source/cipher.so/${variant.name}")
-
             def generateJavaClientTask = project.tasks.create("generate${StringUtils.capitalize(variant.name)}JavaClient", GenerateJavaClientFileTask)
             generateJavaClientTask.configure {
-                it.keyExts = keyExts
+                it.keyExts = keys
                 it.outputDir = outputDir
             }
             variant.registerJavaGeneratingTask(generateJavaClientTask, outputDir)
 
             def copyJavaArchiveTask = project.tasks.create("copyJavaArchive${StringUtils.capitalize(variant.name)}", Copy) {
                 group "cipher.so"
-                from new File(archiveFile, "src/main/java")
-                exclude "net/idik/lib/cipher/so/devso/**"
+                from archiveFile
+                include "src/main/java/**"
+                exclude "src/main/java/net/idik/lib/cipher/so/devso/**"
+                exclude "META-INF/**"
+                exclude "net/idik/lib/cipher/so/**"
+                exclude "CMakeLists.txt"
+                eachFile {
+                    it.path = it.path.replaceFirst("src/main/java/", "")
+                }
                 into outputDir
             }
 

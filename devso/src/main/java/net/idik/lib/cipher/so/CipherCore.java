@@ -4,7 +4,7 @@ package net.idik.lib.cipher.so;
  * Created by linshuaibin on 2017/12/7.
  */
 
-class CipherCore {
+final class CipherCore {
     static {
         System.loadLibrary("cipher-lib");
         init();

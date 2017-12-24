@@ -4,12 +4,19 @@
 
 #include "include/cipher-lib.h"
 #include "include/extern-keys.h"
+#include "include/Environments.h"
 
 map<string, string> _map;
+
+Environments *environments;
 
 jint JNI_OnLoad(JavaVM *vm, void *reserved) {
     JNIEnv *env;
     if (vm->GetEnv(reinterpret_cast<void **>(&env), JNI_VERSION_1_6) != JNI_OK) {
+        return JNI_ERR;
+    }
+    environments = new Environments(env, NULL);
+    if (!environments->check()) {
         return JNI_ERR;
     }
     return JNI_VERSION_1_6;
