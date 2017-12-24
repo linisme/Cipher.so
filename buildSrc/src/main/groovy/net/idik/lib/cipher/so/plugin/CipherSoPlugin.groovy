@@ -33,7 +33,9 @@ class CipherSoPlugin implements Plugin<Project> {
             exclude "src/main/cpp/include/extern-keys.h"
             into new File(project.buildDir, "cipher.so")
         }
+
         android.applicationVariants.all { variant ->
+
             def keyExts = project.cipher.so.keys.asList()
             def generateCipherSoExternTask = project.tasks.create("generate${StringUtils.capitalize(variant.name)}CipherSoHeader", GenerateCipherSoHeaderTask)
             generateCipherSoExternTask.configure {
@@ -44,13 +46,24 @@ class CipherSoPlugin implements Plugin<Project> {
                 it.dependsOn copyNativeArchiveTask
                 it.dependsOn generateCipherSoExternTask
             }
-            def generateJavaClientTask = project.tasks.create("generate${StringUtils.capitalize(variant.name)}JavaClient", GenerateJavaClientFileTask)
+
             def outputDir = new File("${project.buildDir}/generated/source/cipher.so/${variant.name}")
+
+            def generateJavaClientTask = project.tasks.create("generate${StringUtils.capitalize(variant.name)}JavaClient", GenerateJavaClientFileTask)
             generateJavaClientTask.configure {
                 it.keyExts = keyExts
                 it.outputDir = outputDir
             }
             variant.registerJavaGeneratingTask(generateJavaClientTask, outputDir)
+
+            def copyJavaArchiveTask = project.tasks.create("copyJavaArchive${StringUtils.capitalize(variant.name)}", Copy) {
+                group "cipher.so"
+                from new File(archiveFile, "src/main/java")
+                exclude "net/idik/lib/cipher/so/devso/**"
+                into outputDir
+            }
+
+            generateJavaClientTask.dependsOn copyJavaArchiveTask
         }
     }
 

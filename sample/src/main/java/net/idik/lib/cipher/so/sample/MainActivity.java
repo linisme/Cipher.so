@@ -1,5 +1,9 @@
 package net.idik.lib.cipher.so.sample;
 
+import android.app.ActivityManager;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.support.design.widget.FloatingActionButton;
@@ -25,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
 
         TextView welcomeTextView = findViewById(R.id.sample_text);
         welcomeTextView.setText(CipherClient.数据库());
+
+
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

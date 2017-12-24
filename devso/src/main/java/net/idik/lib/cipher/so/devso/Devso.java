@@ -1,6 +1,6 @@
 package net.idik.lib.cipher.so.devso;
 
-import net.idik.lib.cipher.so.CipherClient;
+//import net.idik.lib.cipher.so.CipherCore;
 
 /**
  * Created by linshuaibin on 2017/12/7.
@@ -9,6 +9,7 @@ import net.idik.lib.cipher.so.CipherClient;
 public class Devso {
 
     public static String stringFromJNI() {
-        return CipherClient.get("dbkey");
+//        return CipherCore.get("dbkey");
+        return "hello";
     }
 }

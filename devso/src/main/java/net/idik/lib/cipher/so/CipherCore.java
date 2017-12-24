@@ -1,18 +1,20 @@
 package net.idik.lib.cipher.so;
 
-import android.content.Context;
-
 /**
  * Created by linshuaibin on 2017/12/7.
  */
 
-public class CipherClient {
+class CipherCore {
     static {
         System.loadLibrary("cipher-lib");
         init();
     }
 
-    public static String get(String key) {
+    private CipherCore() throws IllegalAccessException {
+        throw new IllegalAccessException();
+    }
+
+    static String get(String key) {
         return getString(key);
     }
 

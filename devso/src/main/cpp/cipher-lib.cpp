@@ -16,7 +16,7 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved) {
 }
 
 jstring
-Java_net_idik_lib_cipher_so_CipherClient_getString(JNIEnv *env, jobject instance, jstring key_) {
+Java_net_idik_lib_cipher_so_CipherCore_getString(JNIEnv *env, jobject instance, jstring key_) {
     const char *key = env->GetStringUTFChars(key_, 0);
     string keyStr(key);
     string value = _map[keyStr];
@@ -24,6 +24,6 @@ Java_net_idik_lib_cipher_so_CipherClient_getString(JNIEnv *env, jobject instance
     return env->NewStringUTF(value.c_str());
 }
 
-void Java_net_idik_lib_cipher_so_CipherClient_init(JNIEnv *env, jclass type) {
+void Java_net_idik_lib_cipher_so_CipherCore_init(JNIEnv *env, jclass type) {
     LOAD_MAP(_map);
 }
