@@ -8,6 +8,14 @@
   <a href="#"><img src="https://img.shields.io/badge/Recommend-%E2%AD%90%EF%B8%8F%E2%AD%90%EF%B8%8F%E2%AD%90%EF%B8%8F%E2%AD%90%EF%B8%8F%E2%AD%90%EF%B8%8F-green.svg" alt="Recommend"></a>
 </p>
 
+## Wiki
+
+  * [中文](https://github.com/MEiDIK/Cipher.so#%E5%85%B3%E4%BA%8E)
+
+  * [English](https://github.com/MEiDIK/Cipher.so#about)
+
+-----
+
 ## About
 
 ### How it works?
@@ -24,7 +32,7 @@ All the key-values will be auto package into a native library during the compile
 
 #### Installation
 ##### Step 1. in the root build.gradle:  
-Add `jcenter()` resposity and `classpath 'net.idik.lib.security:cipher.so:0.0.3'` dependency into the buildscript as fllow:
+Add `jcenter()` resposity and `classpath 'net.idik.lib.security:cipher.so:0.0.3'` dependency into the buildscript:
 
 ```groovy
 buildscript {
@@ -88,7 +96,7 @@ String dbKey = CipherClient.数据库密码();
 
 ## Contribute?
 
-I am very glad for your contributes. Let's make this job more awnsome.
+I am very glad for your contributes. Let's make this job awesome.
 
 Here is the contribute workflow from github: [Contribute Guide](https://github.com/openframeworks/openFrameworks/wiki/Code-Contribution-Workflow#workflow)
 
@@ -100,7 +108,6 @@ Here is the contribute workflow from github: [Contribute Guide](https://github.c
     * More
 * Support different Application varients
 
------
 ## References
 
 * [Add C and C++ Code to Your Project](https://developer.android.com/studio/projects/add-native-code.html)
@@ -111,6 +118,111 @@ Here is the contribute workflow from github: [Contribute Guide](https://github.c
 * [android-api-SecureKeys](https://github.com/saantiaguilera/android-api-SecureKeys) by [Santi Aguilera](https://github.com/saantiaguilera)
 * [gradle-android-ribbonizer-plugin](https://github.com/maskarade/gradle-android-ribbonizer-plugin) by [maskarade](https://github.com/maskarade)
 
+-----
+
+## 关于
+
+### 原理?
+
+在编译期，通过gradle配置将Key-value加密打包进native so库，然后通过自动生成的Java接口可以获取相应的数据。
+
+### 特性
+
+* 通过简单的配置把隐私信息加密进native库
+* 没有使用反射
+
+---
+## 用法
+
+#### 安装
+##### Step 1. 在root project的build.gradle中:
+在buildscript中添加仓库`jcenter()`，添加依赖`classpath 'net.idik.lib.security:cipher.so:0.0.3'`:
+
+```groovy
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'net.idik.lib.security:cipher.so:0.0.3'
+    }
+}
+```
+
+##### Step 2. 在目标模块的build.gradle中:
+在`apply plugin: 'com.android.application'`**前**(**十分重要**)添加`apply plugin:'cipher.so'`
+
+```groovy
+apply plugin: 'cipher.so'
+apply plugin: 'com.android.application'
+```
+
+至此，Cipher.so已经就绪。
+
+#### 配置
+
+在app模块的build.gradle中，通过以下的配置保存key-value值。
+
+```groovy
+cipher.so {
+    keys {
+        hello {
+            value = 'Hello From Cipher.so😊'
+        }
+        httpsKey {
+            value = 'htkdjfkj@https2017now'
+        }
+        数据库密码 {
+            value = '今天天气不错😂😂'
+        }
+        ...
+    }
+}
+```
+
+然后Rebuild一下，自动生产Java的调用接口。
+
+#### 3. 在Java/Kotlin中调用
+
+```Java
+String hello = CipherClient.hello();
+String httpsKey = CipherClient.httpsKey();
+String dbKey = CipherClient.数据库密码();
+```
+
+
+> 例子: [HelloCipherSo](https://github.com/MEiDIK/HelloCipherSo)
+
+
+
+
+## 贡献代码?
+
+
+十分欢迎你的贡献，让我们一起把这个做得更好。
+
+这是Github的贡献指南: [Contribute Guide](https://github.com/openframeworks/openFrameworks/wiki/Code-Contribution-Workflow#workflow)
+
+## Todos
+* 在.so-lib中加密数据
+* 防止动态攻击
+    * ~~检查应用 签名~~
+    * 更多
+* 支持Multi Application varients
+
+## 相关资料
+
+* [Add C and C++ Code to Your Project](https://developer.android.com/studio/projects/add-native-code.html)
+* [Gradle User Guide](https://docs.gradle.org/4.4/userguide/userguide.html)
+
+## 万分感谢
+
+* [android-api-SecureKeys](https://github.com/saantiaguilera/android-api-SecureKeys) by [Santi Aguilera](https://github.com/saantiaguilera)
+* [gradle-android-ribbonizer-plugin](https://github.com/maskarade/gradle-android-ribbonizer-plugin) by [maskarade](https://github.com/maskarade)
+
+-----
 
 ## License
 
