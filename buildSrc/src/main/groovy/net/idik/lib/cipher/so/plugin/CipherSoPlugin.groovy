@@ -13,6 +13,8 @@ import org.gradle.api.tasks.Copy
 
 class CipherSoPlugin implements Plugin<Project> {
 
+    private String originCmakeListPath
+
     @Override
     void apply(Project project) {
 
@@ -22,7 +24,7 @@ class CipherSoPlugin implements Plugin<Project> {
 
     }
 
-    private static def createTasks(Project project, AppExtension android) {
+    private def createTasks(Project project, AppExtension android) {
 
         def archiveFile = getNativeArchiveFile(project)
         def copyNativeArchiveTask = project.tasks.create("copyNativeArchive", Copy) {
@@ -32,6 +34,16 @@ class CipherSoPlugin implements Plugin<Project> {
             include "CMakeLists.txt"
             exclude "src/main/cpp/include/extern-keys.h"
             into new File(project.buildDir, "cipher.so")
+        }
+
+        def generateCmakeListFileTask = project.tasks.create("generateCmakeListFileTask") {
+            doLast {
+                generateCMakeListsFile(project, originCmakeListPath)
+            }
+        }
+
+        project.getTasksByName("preBuild", false).each {
+            it.dependsOn generateCmakeListFileTask
         }
 
         android.applicationVariants.all { variant ->
@@ -75,11 +87,12 @@ class CipherSoPlugin implements Plugin<Project> {
     }
 
 
-    private static def setupProjectNativeSupport(Project project) {
+    private def setupProjectNativeSupport(Project project) {
         project.afterEvaluate {
             unzipNativeArchive(project)
             def android = project.extensions.findByType(AppExtension)
-            File targetFile = generateCMakeListsFile(project, android)
+            originCmakeListPath = android.externalNativeBuild.cmake.path?.path
+            File targetFile = generateCMakeListsFile(project, originCmakeListPath)
             android.externalNativeBuild {
                 cmake {
                     path targetFile.path
@@ -126,14 +139,15 @@ class CipherSoPlugin implements Plugin<Project> {
         return archiveZip
     }
 
-    private static File generateCMakeListsFile(Project project, AppExtension android) {
+    private
+    static File generateCMakeListsFile(Project project, String originCMakeListsPath) {
         def outputDir = new File("${project.buildDir.path}/cipher.so/cmake")
         if (!outputDir.exists()) {
             outputDir.mkdirs()
         }
         def targetFile = new File(outputDir, "CMakeLists.txt")
         def writer = new FileWriter(targetFile)
-        new CMakeListsBuilder("${project.buildDir.path}/cipher.so/CMakeLists.txt").setOriginCMakePath(android.externalNativeBuild.cmake.path?.path).build().each {
+        new CMakeListsBuilder("${project.buildDir.path}/cipher.so/CMakeLists.txt").setOriginCMakePath(originCMakeListsPath).build().each {
             writer.append(it)
         }
         writer.flush()

@@ -1,4 +1,5 @@
 apply plugin: 'cipher.so'
+
 apply plugin: 'com.android.application'
 
 android {
