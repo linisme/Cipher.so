@@ -30,7 +30,7 @@ targetCompatibility = "1.8"
 
 group = 'net.idik.lib.security'
 archivesBaseName = 'cipher.so'
-version = '0.0.3'
+version = '0.0.4'
 
 task zipNativeArchive(type: Zip) {
     destinationDir project.file("build/libs")
