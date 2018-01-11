@@ -32,7 +32,7 @@ All the key-values will be auto package into a native library during the compile
 
 #### Installation
 ##### Step 1. in the root build.gradle:  
-Add `jcenter()` resposity and `classpath 'net.idik.lib.security:cipher.so:0.0.3'` dependency into the buildscript:
+Add `jcenter()` resposity and `classpath 'net.idik.lib.security:cipher.so:0.0.4'` dependency into the buildscript:
 
 ```groovy
 buildscript {
@@ -42,7 +42,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
-        classpath 'net.idik.lib.security:cipher.so:0.0.3'
+        classpath 'net.idik.lib.security:cipher.so:0.0.4'
     }
 }
 ```
@@ -136,7 +136,7 @@ Here is the contribute workflow from github: [Contribute Guide](https://github.c
 
 #### 安装
 ##### Step 1. 在root project的build.gradle中:
-在buildscript中添加仓库`jcenter()`，添加依赖`classpath 'net.idik.lib.security:cipher.so:0.0.3'`:
+在buildscript中添加仓库`jcenter()`，添加依赖`classpath 'net.idik.lib.security:cipher.so:0.0.4'`:
 
 ```groovy
 buildscript {
@@ -146,7 +146,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
-        classpath 'net.idik.lib.security:cipher.so:0.0.3'
+        classpath 'net.idik.lib.security:cipher.so:0.0.4'
     }
 }
 ```
