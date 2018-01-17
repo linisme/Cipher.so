@@ -38,7 +38,7 @@ task zipNativeArchive(type: Zip) {
     from project.zipTree("build/libs/$archivesBaseName-${version}.jar")
     include "META-INF/**"
     include "net/**"
-    from "${project.rootProject.file("devso").path}"
+    from "${project.rootProject.file("devso").canonicalPath}"
     include "src/main/**"
     include "CMakeLists.txt"
     exclude "src/main/cpp/include/extern-keys.h"
