@@ -11,7 +11,7 @@ using namespace std;
 
 Environments::Environments(JNIEnv *jniEnv, jobject context) {
     this->jniEnv = jniEnv;
-    this->context = getApplicationContext(context);
+    this->context = getApplicationContext(jniEnv, context);
 }
 
 bool Environments::check() {
@@ -47,26 +47,6 @@ bool Environments::checkSignature() {
     jniEnv->DeleteLocalRef(signatures);
     jniEnv->DeleteLocalRef(signature_clz);
     return result;
-}
-
-jobject Environments::getApplicationContext(jobject context) {
-    jobject application = NULL;
-    jclass application_clz = this->jniEnv->FindClass("android/app/ActivityThread");
-    if (application_clz != NULL) {
-        jmethodID current_application_method_id = jniEnv->GetStaticMethodID(application_clz,
-                                                                            "currentApplication",
-                                                                            "()Landroid/app/Application;");
-        if (current_application_method_id != NULL) {
-            application = jniEnv->CallStaticObjectMethod(application_clz,
-                                                         current_application_method_id);
-        }
-        jniEnv->DeleteLocalRef(application_clz);
-    }
-    if (application == NULL) {
-        ERROR("ClassNotFoundException: android.app.ActivityThread.class");
-        application = context;
-    }
-    return application;
 }
 
 jobject Environments::getPackageInfo() {

@@ -14,8 +14,6 @@ private:
     JNIEnv *jniEnv;
     jobject context;
 
-    jobject getApplicationContext(jobject context);
-
     jobject getPackageInfo();
 
     jstring getPackageName();
