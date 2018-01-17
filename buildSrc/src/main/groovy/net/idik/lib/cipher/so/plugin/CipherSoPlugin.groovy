@@ -59,7 +59,7 @@ class CipherSoPlugin implements Plugin<Project> {
                 it.dependsOn copyNativeArchiveTask
                 it.dependsOn generateCipherSoExternTask
             }
-            def outputDir = new File("${project.buildDir}/generated/source/cipher.so/${variant.name}")
+            def outputDir = new File(project.buildDir, "/generated/source/cipher.so/${variant.name}")
             def generateJavaClientTask = project.tasks.create("generate${StringUtils.capitalize(variant.name)}JavaClient", GenerateJavaClientFileTask)
             generateJavaClientTask.configure {
                 it.keyExts = keys
@@ -90,11 +90,11 @@ class CipherSoPlugin implements Plugin<Project> {
         project.afterEvaluate {
             unzipNativeArchive(project)
             def android = project.extensions.findByType(AppExtension)
-            originCmakeListPath = android.externalNativeBuild.cmake.path?.path
+            originCmakeListPath = android.externalNativeBuild.cmake.path?.canonicalPath
             File targetFile = generateCMakeListsFile(project, originCmakeListPath)
             android.externalNativeBuild {
                 cmake {
-                    path targetFile.path
+                    path targetFile.canonicalPath
                 }
             }
             createTasks(project, android)
@@ -115,7 +115,7 @@ class CipherSoPlugin implements Plugin<Project> {
 
     private static def getNativeArchiveFile(Project project) {
         if (project.rootProject.subprojects.find { it.name == "devso" } != null) {
-            return project.rootProject.file("devso").path
+            return project.rootProject.file("devso").canonicalPath
         } else {
             def archiveZip = findNativeArchiveFromBuildscript(project)
             if (archiveZip == null) {
@@ -142,13 +142,13 @@ class CipherSoPlugin implements Plugin<Project> {
 
     private
     static File generateCMakeListsFile(Project project, String originCMakeListsPath) {
-        def outputDir = new File("${project.buildDir.path}/cipher.so/cmake")
+        def outputDir = new File(project.buildDir, "/cipher.so/cmake")
         if (!outputDir.exists()) {
             outputDir.mkdirs()
         }
         def targetFile = new File(outputDir, "CMakeLists.txt")
         def writer = new FileWriter(targetFile)
-        new CMakeListsBuilder("${project.buildDir.path}/cipher.so/CMakeLists.txt").setOriginCMakePath(originCMakeListsPath).build().each {
+        new CMakeListsBuilder("${project.buildDir.canonicalPath}/cipher.so/CMakeLists.txt").setOriginCMakePath(originCMakeListsPath).build().each {
             writer.append(it)
         }
         writer.flush()
