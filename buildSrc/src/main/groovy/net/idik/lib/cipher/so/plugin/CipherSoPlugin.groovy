@@ -26,6 +26,13 @@ class CipherSoPlugin implements Plugin<Project> {
 
     private def createTasks(Project project, AppExtension android) {
 
+        def generateCmakeListFileTask = project.tasks.create("generateCmakeListFile") {
+            group "cipher.so"
+            doLast {
+                generateCMakeListsFile(project, originCmakeListPath)
+            }
+        }
+
         def archiveFile = getNativeArchiveFile(project)
         def copyNativeArchiveTask = project.tasks.create("copyNativeArchive", Copy) {
             group "cipher.so"
@@ -36,15 +43,7 @@ class CipherSoPlugin implements Plugin<Project> {
             into new File(project.buildDir, "cipher.so")
         }
 
-        def generateCmakeListFileTask = project.tasks.create("generateCmakeListFileTask") {
-            doLast {
-                generateCMakeListsFile(project, originCmakeListPath)
-            }
-        }
-
-        project.getTasksByName("preBuild", false).each {
-            it.dependsOn generateCmakeListFileTask
-        }
+        copyNativeArchiveTask.dependsOn generateCmakeListFileTask
 
         android.applicationVariants.all { variant ->
 
@@ -131,7 +130,9 @@ class CipherSoPlugin implements Plugin<Project> {
         project.buildscript.configurations.findAll {
             project.gradle.gradleVersion >= '4.0' ? it.isCanBeResolved() : true
         }.each { config ->
-            File file = config.files.find { it.name.toUpperCase(Locale.getDefault()).contains("CIPHER.SO") }
+            File file = config.files.find {
+                it.name.toUpperCase(Locale.getDefault()).contains("CIPHER.SO")
+            }
             if (file != null) {
                 archiveZip = project.zipTree(file)
             }
