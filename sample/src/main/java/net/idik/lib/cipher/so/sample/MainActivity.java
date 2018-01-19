@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         TextView welcomeTextView = findViewById(R.id.sample_text);
-        welcomeTextView.setText(CipherClient.数据库());
+        welcomeTextView.setText(CipherClient.数据库() + "\n" + CipherClient.hello());
 
 
         FloatingActionButton fab = findViewById(R.id.fab);

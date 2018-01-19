@@ -26,7 +26,7 @@ public final class AESEncryptor {
     private static final String AES_MODE = "AES/CBC/PKCS5Padding";
 
 
-    private static byte[] iv = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x2D};
+    private static byte[] iv = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
     public static void setIv(String iv) {
         try {
@@ -106,16 +106,6 @@ public final class AESEncryptor {
         IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
         cipher.init(Cipher.DECRYPT_MODE, keySpec, ivParameterSpec);
         return cipher.doFinal(cipherMessage);
-    }
-
-    private static String bytesToHex(byte[] bytes) {
-        final char[] hexArray = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
-        StringBuilder sb = new StringBuilder();
-        for (byte b : bytes) {
-            sb.append(hexArray[(b & 0xF0) >>> 4]);
-            sb.append(hexArray[b & 0x0F]);
-        }
-        return sb.toString();
     }
 
     private AESEncryptor() throws IllegalAccessException {

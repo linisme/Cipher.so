@@ -108,16 +108,6 @@ public final class AESEncryptor {
         return cipher.doFinal(cipherMessage);
     }
 
-    private static String bytesToHex(byte[] bytes) {
-        final char[] hexArray = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
-        StringBuilder sb = new StringBuilder();
-        for (byte b : bytes) {
-            sb.append(hexArray[(b & 0xF0) >>> 4]);
-            sb.append(hexArray[b & 0x0F]);
-        }
-        return sb.toString();
-    }
-
     private AESEncryptor() throws IllegalAccessException {
         throw new IllegalAccessException();
     }
