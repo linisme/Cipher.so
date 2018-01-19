@@ -75,6 +75,7 @@ cipher.so {
         }
         ...
     }
+    encryptSeed = 'HelloSecretKey' //Secret key used for encryption
 }
 ```
 
@@ -102,7 +103,7 @@ Here is the contribute workflow from github: [Contribute Guide](https://github.c
 
 
 ## Todos
-* Encypte data in .so-lib
+* ~~Encrypt data in .so-lib~~
 * Prevent dynamic attacks
     * ~~Check Signature~~
     * More
@@ -179,6 +180,7 @@ cipher.so {
         }
         ...
     }
+    encryptSeed = 'HelloSecretKey' //用于加密的密钥
 }
 ```
 
@@ -206,7 +208,7 @@ String dbKey = CipherClient.数据库密码();
 这是Github的贡献指南: [Contribute Guide](https://github.com/openframeworks/openFrameworks/wiki/Code-Contribution-Workflow#workflow)
 
 ## Todos
-* 在.so-lib中加密数据
+* ~~在.so-lib中加密数据~~
 * 防止动态攻击
     * ~~检查应用 签名~~
     * 更多
