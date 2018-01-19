@@ -8,6 +8,7 @@ class SoExt {
     NamedDomainObjectContainer<KeyExt> keys
 
     String signature = ""
+    String encryptSeed = "Cipher.so@DEFAULT"
 
     SoExt(Project project) {
         keys = project.container(KeyExt)
@@ -22,6 +23,7 @@ class SoExt {
         return "SoExt{" +
                 "keys=" + keys +
                 ", signature='" + signature + '\'' +
+                ", secretKey='" + encryptSeed + '\'' +
                 '}';
     }
 }

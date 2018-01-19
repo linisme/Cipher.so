@@ -19,4 +19,6 @@ std::string to_string(const T &n) {
     return stream.str();
 }
 
+
+
 #endif //CIPHERSO_LOGGER_H

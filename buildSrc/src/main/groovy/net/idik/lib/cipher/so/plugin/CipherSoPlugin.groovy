@@ -49,15 +49,16 @@ class CipherSoPlugin implements Plugin<Project> {
 
             def configs = project.cipher.so
             def keys = configs.keys.asList()
-            def generateCipherSoExternTask = project.tasks.create("generate${StringUtils.capitalize(variant.name)}CipherSoHeader", GenerateCipherSoHeaderTask)
-            generateCipherSoExternTask.configure {
+            def generateCipherSoExternalTask = project.tasks.create("generate${StringUtils.capitalize(variant.name)}CipherSoHeader", GenerateCipherSoHeaderTask)
+            generateCipherSoExternalTask.configure {
                 it.keyExts = keys
                 it.outputDir = IOUtils.getNativeHeaderDir(project)
                 it.signature = configs.signature
+                it.secretKey = configs.encryptSeed
             }
             project.getTasksByName("generateJsonModel${StringUtils.capitalize(variant.name)}", false).each {
                 it.dependsOn copyNativeArchiveTask
-                it.dependsOn generateCipherSoExternTask
+                it.dependsOn generateCipherSoExternalTask
             }
             def outputDir = new File(project.buildDir, "/generated/source/cipher.so/${variant.name}")
             def generateJavaClientTask = project.tasks.create("generate${StringUtils.capitalize(variant.name)}JavaClient", GenerateJavaClientFileTask)

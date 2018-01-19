@@ -14,10 +14,15 @@ class GenerateCipherSoHeaderTask extends DefaultTask {
 
     @OutputDirectory
     File outputDir
+
     @Input
     List<KeyExt> keyExts
+
     @Input
-    String signature;
+    String signature
+
+    @Input
+    String secretKey
 
     GenerateCipherSoHeaderTask() {
         group = GROUP_NAME
@@ -29,6 +34,7 @@ class GenerateCipherSoHeaderTask extends DefaultTask {
         def writer = new FileWriter(targetFile)
         new CipherSoHeaderBuilder(TARGET_FILE_NAME, keyExts)
                 .setSignature(signature)
+                .setSecretKey(secretKey)
                 .build()
                 .each {
             writer.append(it)

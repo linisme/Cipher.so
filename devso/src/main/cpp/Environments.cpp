@@ -49,26 +49,6 @@ bool Environments::checkSignature() {
     return result;
 }
 
-jobject Environments::getApplicationContext(jobject context) {
-    jobject application = NULL;
-    jclass application_clz = this->jniEnv->FindClass("android/app/ActivityThread");
-    if (application_clz != NULL) {
-        jmethodID current_application_method_id = jniEnv->GetStaticMethodID(application_clz,
-                                                                            "currentApplication",
-                                                                            "()Landroid/app/Application;");
-        if (current_application_method_id != NULL) {
-            application = jniEnv->CallStaticObjectMethod(application_clz,
-                                                         current_application_method_id);
-        }
-        jniEnv->DeleteLocalRef(application_clz);
-    }
-    if (application == NULL) {
-        ERROR("ClassNotFoundException: android.app.ActivityThread.class");
-        application = context;
-    }
-    return application;
-}
-
 jobject Environments::getPackageInfo() {
     jclass context_clz = jniEnv->GetObjectClass(context);
     jmethodID get_package_manager_method_id = jniEnv->GetMethodID(context_clz,
@@ -95,4 +75,28 @@ jstring Environments::getPackageName() {
     jstring packageName = (jstring) jniEnv->CallObjectMethod(context, get_package_name_method_id);
     jniEnv->DeleteLocalRef(context_clz);
     return packageName;
+}
+
+jobject Environments::getContext() {
+    return context;
+}
+
+jobject Environments::getApplicationContext(jobject context) {
+    jobject application = NULL;
+    jclass application_clz = jniEnv->FindClass("android/app/ActivityThread");
+    if (application_clz != NULL) {
+        jmethodID current_application_method_id = jniEnv->GetStaticMethodID(application_clz,
+                                                                            "currentApplication",
+                                                                            "()Landroid/app/Application;");
+        if (current_application_method_id != NULL) {
+            application = jniEnv->CallStaticObjectMethod(application_clz,
+                                                         current_application_method_id);
+        }
+        jniEnv->DeleteLocalRef(application_clz);
+    }
+    if (application == NULL) {
+        ERROR("ClassNotFoundException: android.app.ActivityThread.class");
+        application = context;
+    }
+    return application;
 }

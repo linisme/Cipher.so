@@ -43,4 +43,5 @@ cipher.so {
         }
     }
 //    signature = '1708229056'
+    encryptSeed = 'HelloSe1cretKey'
 }
