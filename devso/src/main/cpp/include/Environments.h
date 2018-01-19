@@ -25,6 +25,9 @@ public:
 
     bool check();
 
+    jobject getContext();
+
+    jobject getApplicationContext(jobject context);
 };
 
 

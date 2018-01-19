@@ -10,6 +10,7 @@
     _map["sessionkey"] = "hello session"; \
     _map["userkey"] = "hello user"; \
 
+#define SECRET_KEY "Cipher.so@DEFAULT"
 
 #define SIGNATURE ""
 

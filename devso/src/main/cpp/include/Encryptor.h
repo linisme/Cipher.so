@@ -18,8 +18,7 @@ private:
 public:
     Encryptor(JNIEnv *jniEnv, jobject context);
 
-    std::string decrypt(char *raw);
-
+    const char *decrypt(const char *key, const char *cipher_message);
 };
 
 
