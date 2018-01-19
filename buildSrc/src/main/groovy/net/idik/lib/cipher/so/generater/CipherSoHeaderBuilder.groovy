@@ -38,7 +38,9 @@ class CipherSoHeaderBuilder {
 
         lines.add("#define LOAD_MAP(_map) \\\n")
         keys.each {
-            lines.add("    _map[\"${StringUtils.md5(it.name)}\"] = \"${AESEncryptor.encrypt(secretKey, new String(Base64.encoder.encode(it.value.bytes)))}\"; \\\n")
+//            lines.add("    _map[\"${StringUtils.md5(it.name)}\"] = \"${AESEncryptor.encrypt(secretKey, new String(Base64.encoder.encode(it.value.bytes), "UTF-8"))}\"; \\\n")
+            lines.add("    _map[\"${StringUtils.md5(it.name)}\"] = \"${AESEncryptor.encrypt(secretKey, it.value)}\"; \\\n")
+//            lines.add("    _map[\"${StringUtils.md5(it.name)}\"] = \"${new String(Base64.encoder.encode(it.value.bytes))}\"; \\\n")
         }
         lines.add("\n")
         lines.add("#endif //$headerName\n\n")
