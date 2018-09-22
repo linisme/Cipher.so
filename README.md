@@ -1,3 +1,8 @@
+PLEASE NOTE, THIS PROJECT IS NO LONGER BEING MAINTAINED
+
+----
+
+
 <p align="center"><a href="https://github.com/MEiDIK/Cipher.so" target="_blank"><img width="200"src="logo.png"></a></p>
 <h1 align="center">Cipher.so</h1>
 <p align="center">Providing a simple way to keep your secure info safe for android app development.</p>
