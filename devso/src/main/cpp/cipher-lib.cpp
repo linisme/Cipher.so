@@ -10,7 +10,6 @@
 map<string, string> _map;
 
 Environments *environments;
-Encryptor *encryptor;
 
 jint JNI_OnLoad(JavaVM *vm, void *reserved) {
     JNIEnv *env;
@@ -18,7 +17,6 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved) {
         return JNI_ERR;
     }
     environments = new Environments(env, NULL);
-    encryptor = new Encryptor(env, environments->getContext());
     if (!environments->check()) {
         return JNI_ERR;
     }
@@ -30,6 +28,7 @@ Java_net_idik_lib_cipher_so_CipherCore_getString(JNIEnv *env, jobject instance, 
     const char *key = env->GetStringUTFChars(key_, 0);
     string keyStr(key);
     string value = _map[keyStr];
+    Encryptor *encryptor = new Encryptor(env, environments->getContext());
     const char *result = encryptor->decrypt(SECRET_KEY, value.c_str());
     env->ReleaseStringUTFChars(key_, key);
     return env->NewStringUTF(result);
